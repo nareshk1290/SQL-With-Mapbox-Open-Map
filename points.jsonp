@@ -1,0 +1,3 @@
+contacts = {"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Point","coordinates":[-52.69763,47.57113]},"properties":{"id":4000232,"YEAR":2012,"STREET1":"092 PART O N/A N/A","STREET2":"A1A 1A1"}}
+]}

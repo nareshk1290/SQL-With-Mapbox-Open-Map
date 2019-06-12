@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>Testing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="./css/mapstyle.css" />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+<style type="text/css">
+body {
+    font-family: sans-serif;
+}
+#mapWrap, .credit {
+    width:100%;
+    display: block;
+    font-family: sans-serif;
+    color:#555;
+    margin-left: auto;
+    margin-right: auto;
+}
+.credit {
+    line-height: 6px;
+    font-size: 12px;
+    color:#888;
+}
+.credit a {
+    text-decoration:none;
+    color: coral;
+}
+</style>
+</head>
+
+<body>
+<div id="mapWrap">
+    <div class="column right">
+        <div id="map"></div>
+    </div>
+</div>
+<script src="./js/voronoihover.js"></script>
+<script src="file://C:\\Users\\Naresh.Kumar\\Desktop\\MapTesting - Updated\\points.jsonp"></script>
+
+<script>
+////////////////////////////////////////////////////////////////////////////////////// 
+// make sure your bounds contain the entire point layer.                            //
+// On map load it will generate the Voronoi polygons based on the data within view. //
+//////////////////////////////////////////////////////////////////////////////////////
+
+var mapBounds = [[-109.99, 40.95],[-51.97, 53.00]];
+var objJSONData = (contacts);
+var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+// please use your own token!
+mapboxgl.accessToken = '<MAP BOX TOKEN TO BE USED HERE>';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [-60.37, 50.72],
+    maxBounds: mapBounds
+});
+map.on('load', function() {
+    // load your geojson
+    map.addSource('points', {
+      type: 'geojson',
+      data: objJSONData
+    });
+    // add the points data as circle type
+    map.addLayer({
+        'id': 'pointsLayer',
+        'type': 'circle',
+        'source': 'points',
+        'sourceLayer': 'pointsLayer',
+        'paint': {
+            'circle-radius': 2,
+            'circle-color': '#000'
+        }
+    });
+    // wait for map to render fully
+    map.on('render', styleLoaded);
+ 
+    var dataNames = ["id", "YEAR"];
+    function styleLoaded () {
+      if (map.loaded()) {
+        console.log('map loaded');
+        queryMap(dataNames);
+        map.off('render', styleLoaded); 
+      }
+    }
+});
+// btn function
+function displayVoronoi() {
+	map.setPaintProperty('voronoiPolygonLayer', 'fill-opacity', 0);
+}
+function preload() {
+	dataJSON = loadJSON("points2.json");
+}
+</script>
+</body>
+</html>
